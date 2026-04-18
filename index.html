@@ -44,19 +44,21 @@ function render() {
       <th>City</th>
       <th>Price</th>
       <th>Status</th>
+      <th>Actions</th>
     </tr>
   `;
 
-  deals.forEach(d => {
-    table.innerHTML += `
-      <tr>
-        <td>${d.name}</td>
-        <td>${d.city}</td>
-        <td>${d.price}</td>
-        <td>${d.status}</td>
-      </tr>
-    `;
-  });
+  deals.forEach((d, index) => {
+  table.innerHTML += `
+    <tr>
+      <td>${d.name}</td>
+      <td>${d.city}</td>
+      <td>${d.price}</td>
+      <td>${d.status}</td>
+      <td><button onclick="deleteDeal(${index})">Delete</button></td>
+    </tr>
+  `;
+});
 }
 
 function addDeal() {
