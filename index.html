@@ -12,17 +12,21 @@
   <input id="name" placeholder="Deal Name">
   <input id="city" placeholder="City">
   <input id="price" placeholder="Price">
-  <select id="status">
-  <option value="New" selected>New</option>
-  <option value="Reviewing">Reviewing</option>
-  <option value="Pass">Pass</option>
-  <option value="Pursue">Pursue</option>
-  <option value="LOI">LOI</option>
-  <option value="Dead">Dead</option>
-</select></select>
+
+  <div style="margin-top:10px;">
+    <button onclick="setStatus('New')">New</button>
+    <button onclick="setStatus('Reviewing')">Review</button>
+    <button onclick="setStatus('Pursue')">Pursue</button>
+    <button onclick="setStatus('LOI')">LOI</button>
+    <button onclick="setStatus('Dead')">Dead</button>
+  </div>
+
+  <p id="currentStatus">Selected: New</p>
+
   <button onclick="addDeal()">Add</button>
 
   <h3 style="margin-top:30px;">Pipeline</h3>
+
   <table border="1" cellpadding="10" id="table">
     <tr>
       <th>Deal Name</th>
@@ -33,60 +37,67 @@
     </tr>
   </table>
 
-<script>
-let deals = JSON.parse(localStorage.getItem("deals")) || [];
+  <script>
+    let deals = JSON.parse(localStorage.getItem("deals")) || [];
+    let selectedStatus = "New";
 
-function render() {
-  const table = document.getElementById("table");
+    function setStatus(s) {
+      selectedStatus = s;
+      document.getElementById("currentStatus").innerText = "Selected: " + s;
+    }
 
-  table.innerHTML = `
-    <tr>
-      <th>Deal Name</th>
-      <th>City</th>
-      <th>Price</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  `;
+    function render() {
+      const table = document.getElementById("table");
 
-  deals.forEach((d, index) => {
-  table.innerHTML += `
-    <tr>
-      <td>${d.name}</td>
-      <td>${d.city}</td>
-      <td>${d.price}</td>
-      <td>${d.status}</td>
-      <td><button onclick="deleteDeal(${index})">Delete</button></td>
-    </tr>
-  `;
-});
-}
+      table.innerHTML = `
+        <tr>
+          <th>Deal Name</th>
+          <th>City</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      `;
 
-function addDeal() {
-  const deal = {
-    name: document.getElementById("name").value,
-    city: document.getElementById("city").value,
-    price: document.getElementById("price").value,
-    status: document.getElementById("status").value
-  };
+      deals.forEach((d, index) => {
+        table.innerHTML += `
+          <tr>
+            <td>${d.name}</td>
+            <td>${d.city}</td>
+            <td>${d.price}</td>
+            <td>${d.status}</td>
+            <td><button onclick="deleteDeal(${index})">Delete</button></td>
+          </tr>
+        `;
+      });
+    }
 
-  deals.push(deal);
-  localStorage.setItem("deals", JSON.stringify(deals));
+    function addDeal() {
+      const deal = {
+        name: document.getElementById("name").value,
+        city: document.getElementById("city").value,
+        price: document.getElementById("price").value,
+        status: selectedStatus
+      };
 
-  render();
+      deals.push(deal);
+      localStorage.setItem("deals", JSON.stringify(deals));
 
-  document.getElementById("name").value = "";
-  document.getElementById("city").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("status").value = "";
-}
-function deleteDeal(index) {
-  deals.splice(index, 1);
-  localStorage.setItem("deals", JSON.stringify(deals));
-  render();
-}
-render();
-</script>
+      render();
+
+      document.getElementById("name").value = "";
+      document.getElementById("city").value = "";
+      document.getElementById("price").value = "";
+    }
+
+    function deleteDeal(index) {
+      deals.splice(index, 1);
+      localStorage.setItem("deals", JSON.stringify(deals));
+      render();
+    }
+
+    render();
+  </script>
 
 </body>
 </html>
