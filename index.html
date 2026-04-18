@@ -80,7 +80,11 @@ function addDeal() {
   document.getElementById("price").value = "";
   document.getElementById("status").value = "";
 }
-
+function deleteDeal(index) {
+  deals.splice(index, 1);
+  localStorage.setItem("deals", JSON.stringify(deals));
+  render();
+}
 render();
 </script>
 
