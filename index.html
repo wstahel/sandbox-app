@@ -1,7 +1,78 @@
 <!DOCTYPE html>
 <html>
-  <body style="font-family: Arial; padding: 40px;">
-    <h1>WGR Dashboard</h1>
-    <p>Version 2 - testing deploy</p>
-  </body>
+<head>
+  <title>WGR Deal Tracker</title>
+</head>
+
+<body style="font-family: Arial; padding: 40px;">
+
+  <h1>WGR Deal Tracker</h1>
+
+  <h3>Add Deal</h3>
+  <input id="name" placeholder="Deal Name">
+  <input id="city" placeholder="City">
+  <input id="price" placeholder="Price">
+  <input id="status" placeholder="Status">
+  <button onclick="addDeal()">Add</button>
+
+  <h3 style="margin-top:30px;">Pipeline</h3>
+  <table border="1" cellpadding="10" id="table">
+    <tr>
+      <th>Deal Name</th>
+      <th>City</th>
+      <th>Price</th>
+      <th>Status</th>
+    </tr>
+  </table>
+
+<script>
+let deals = JSON.parse(localStorage.getItem("deals")) || [];
+
+function render() {
+  const table = document.getElementById("table");
+
+  table.innerHTML = `
+    <tr>
+      <th>Deal Name</th>
+      <th>City</th>
+      <th>Price</th>
+      <th>Status</th>
+    </tr>
+  `;
+
+  deals.forEach(d => {
+    table.innerHTML += `
+      <tr>
+        <td>${d.name}</td>
+        <td>${d.city}</td>
+        <td>${d.price}</td>
+        <td>${d.status}</td>
+      </tr>
+    `;
+  });
+}
+
+function addDeal() {
+  const deal = {
+    name: document.getElementById("name").value,
+    city: document.getElementById("city").value,
+    price: document.getElementById("price").value,
+    status: document.getElementById("status").value
+  };
+
+  deals.push(deal);
+  localStorage.setItem("deals", JSON.stringify(deals));
+
+  render();
+
+  document.getElementById("name").value = "";
+  document.getElementById("city").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("status").value = "";
+}
+
+render();
+</script>
+
+</body>
 </html>
